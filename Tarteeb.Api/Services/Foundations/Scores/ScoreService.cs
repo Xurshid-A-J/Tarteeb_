@@ -9,6 +9,7 @@ using Tarteeb.Api.Brokers.DateTimes;
 using Tarteeb.Api.Brokers.Loggings;
 using Tarteeb.Api.Brokers.Storages;
 using Tarteeb.Api.Models.Foundations.Scores;
+using Tarteeb.Api.Models.Foundations.Scores.Exceptions;
 
 namespace Tarteeb.Api.Services.Foundations.Scores
 {
@@ -28,13 +29,16 @@ namespace Tarteeb.Api.Services.Foundations.Scores
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Score> ModifyScoreAsync(Score score)
+        public ValueTask<Score> ModifyScoreAsync(Score score) =>
+        TryCatch(async () =>
         {
+            ValidateScoreNotNull(score);
+
             Score maybeScore =
                 await this.storageBroker.SelectScoreByIdAsync(score.Id);
 
-            return await this.storageBroker.UpdateScoreAsync(maybeScore);
-        }
+            return await this.storageBroker.UpdateScoreAsync(score);
+        });
 
         public ValueTask<Score> RemoveScoreByIdAsync(Guid scoreId) =>
         TryCatch(async () =>
