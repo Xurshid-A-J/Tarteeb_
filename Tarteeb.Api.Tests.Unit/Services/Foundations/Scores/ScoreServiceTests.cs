@@ -103,7 +103,6 @@ namespace Tarteeb.Api.Tests.Unit.Services.Foundations.Scores
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
 
-
         private static Filler<Score> CreateScoreFiller(DateTimeOffset date)
         {
             var filler = new Filler<Score>();
