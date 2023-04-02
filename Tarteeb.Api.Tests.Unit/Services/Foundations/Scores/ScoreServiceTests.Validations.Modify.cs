@@ -57,11 +57,7 @@ namespace Tarteeb.Api.Tests.Unit.Services.Foundations.Scores
             string invalidString)
         {
             // given 
-            var invalidScore = new Score()
-            {
-                EffortLink = invalidString
-            };
-
+            var invalidScore = new Score();
             var invalidScoreException = new InvalidScoreException();
 
             invalidScoreException.AddData(
