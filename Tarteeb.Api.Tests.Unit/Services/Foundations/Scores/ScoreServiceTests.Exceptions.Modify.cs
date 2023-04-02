@@ -123,7 +123,7 @@ namespace Tarteeb.Api.Tests.Unit.Services.Foundations.Scores
             Score randomScore = CreateRandomModifyScore(randomDateTime);
             Score someScore = randomScore;
             someScore.CreatedDate = randomDateTime.AddMinutes(minutesInPast);
-            Guid ScoreId = someScore.Id;
+            Guid scoreId = someScore.Id;
             var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
 
             var lockedScoreException =
@@ -133,7 +133,7 @@ namespace Tarteeb.Api.Tests.Unit.Services.Foundations.Scores
                 new ScoreDependencyValidationException(lockedScoreException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectScoreByIdAsync(ScoreId)).
+                broker.SelectScoreByIdAsync(scoreId)).
                     ThrowsAsync(databaseUpdateConcurrencyException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -150,7 +150,7 @@ namespace Tarteeb.Api.Tests.Unit.Services.Foundations.Scores
                 .BeEquivalentTo(expectedScoreDependencyValidationException);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectScoreByIdAsync(ScoreId), Times.Once);
+                broker.SelectScoreByIdAsync(scoreId), Times.Once);
 
             this.dateTimeBrokerMock.Verify(broker =>
                broker.GetCurrentDateTime(), Times.Once);
